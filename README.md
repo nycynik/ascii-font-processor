@@ -1,11 +1,7 @@
 # ascii-font-processor
 This is a ascii font editor, converts ascii 'fonts' to JSON files
 
-
-Changing direction after sleeping on it.
-It should not be an editor, or if it is, it's going to either be for editing, not for creating or it's going to need a lot of work.  I need an editor like ACiD Draw, soemthing
-with a 'click anywhere and type' kind of editor, not a 'keep hitting space to move right' kind of editor.  So instead this should be a command line tool, with a GUI :).
-
+This project is abandoned really, as I found http://www.jave.de/figlet/figfont.html.  I might adapt this to use figlet, but I will probably never do so. Also there is [pyfiglet](https://www.geeksforgeeks.org/python-ascii-art-using-pyfiglet-module/).
 
 # What is it?
 

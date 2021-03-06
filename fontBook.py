@@ -33,7 +33,7 @@ def parse_font_file(font_file_path):
                     continue
 
                 if in_header:
-                    k, v = line.split(':', 1)
+                    k, v = data.split(':', 1)
                     if len(k) > 0 and len(v) > 0:
                         font[k.strip()] = v.strip()
 
@@ -41,12 +41,12 @@ def parse_font_file(font_file_path):
                     # parsing letters.
                     if not in_letter:
                         in_letter = True
-                        current_letter = line[0]
+                        current_letter = data[0]
                         font[GLYPH_KEY][current_letter] = []
                         continue
                     else:
                         if current_letter in font[GLYPH_KEY]:
-                            font[GLYPH_KEY][current_letter].append(line)
+                            font[GLYPH_KEY][current_letter].append(data)
 
     except IOError as e:
         print(e)
@@ -66,9 +66,11 @@ def load_fonts(font_dir):
     :return: object containing all the fonts that were parsable from the folder
     """
 
+
     fonts = {}
     if os.path.isdir(font_dir):
         for filename in os.listdir(font_dir):
+            # sg.one_line_progress_meter('Reading Fonts', i+1, 10000, 'key','Optional message')
             if filename.endswith(".txt"):
                 font = parse_font_file(os.path.join(font_dir, filename))
                 if font is not None:
