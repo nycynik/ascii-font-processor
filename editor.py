@@ -2,6 +2,8 @@
 # Font editor
 #
 import PySimpleGUI as sg
+import os
+import json
 
 
 def showEditor(font):
@@ -35,7 +37,7 @@ def showEditor(font):
                   'Courier', 12), key='-CHAR-')],
               [sg.Button('Save', key='-SAVE-'), sg.Exit()]]
 
-    window = sg.Window('Ascii Font Editor', layout)
+    window = sg.Window('Ascii Font Editor', layout, finalize=True)
 
     return window
 
@@ -44,10 +46,19 @@ def save_value(font, key, value):
     font[key] = value
 
 
+def save_font(font, destination):
+    with open(destination, 'w') as json_file:
+        json.dump(font, json_file)
+
+
 def main():
 
     font = {}
     cur_letter = 'A'
+    destination = './output/font.json'
+
+    if not os.path.isdir('./output'):
+        os.makedirs('./output')
 
     window = showEditor(font)
     while True:                             # The Event Loop
@@ -64,7 +75,8 @@ def main():
                 window['-CHAR-'].update(event)
             cur_letter = event
         elif event == '-SAVE-':
-            print(font)
+            save_font(font, destination)
+            print('saved')
 
     window.close()
 
