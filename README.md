@@ -13,6 +13,7 @@ I found http://www.jave.de/figlet/figfont.html.  Using [pyfiglet](https://www.ge
 
 Fonts are found how figlet finds them, you may already have fonts installed on your machine, or it will search in the fonts folder int he folder it is launched in.
 
+more fonts can be found here: https://github.com/pwaller/pyfiglet/tree/master/pyfiglet/fonts 
 
 ## Future Work
 
