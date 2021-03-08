@@ -19,6 +19,8 @@ def show_font_editor(settings, fonts):
                    ]
     column_right = [[sg.Text("Font Name:"), sg.Input(key='-font-name-')],
                     [sg.Multiline(size=(20, 10), key='-font-info-')],
+                    [sg.Text("Text:"), sg.Input(
+                        key='-text-to-show-'), sg.Button('Show')],
                     [sg.Multiline(size=(25, 20), key='-OUTPUT-',
                                   font=('Courier', '12'))],
                     ]
@@ -27,7 +29,7 @@ def show_font_editor(settings, fonts):
     col2 = sg.Column(column_right)
 
     layout = [[col1,  col2],
-              [sg.Button('Show'), sg.Button('Exit')]]
+              [sg.Button('Exit')]]
 
     window = sg.Window('Font Viewer', layout, auto_size_text=True,
                        auto_size_buttons=True, resizable=True, grab_anywhere=False,
@@ -43,18 +45,25 @@ def show_font_editor(settings, fonts):
 
     while True:  # Event Loop
         event, values = window.read()
+        update_text = False
 
         if event == sg.WIN_CLOSED or event == 'Exit':
             break
-        if event == 'Save':
-            pass
+        if event == 'Show':
+            update_text = True
         if event == '-font-list-':
             # first one is the selected, no multi-select allowed.
             selected_font = fonts[values['-font-list-'][0]]
             window['-font-name-'].update(selected_font)
             window['-font-info-'].update(fontBook.get_info(selected_font))
+            update_text = True
+
+        if update_text:
+            text = values['-text-to-show-']
+            if text.strip() == '':
+                text = selected_font.strip()
             window['-OUTPUT-'].update(
-                fontBook.draw_text(selected_font, selected_font))
+                fontBook.draw_text(selected_font, text))
 
     window.close()
 
