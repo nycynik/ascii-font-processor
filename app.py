@@ -12,13 +12,58 @@ def save_json(values, save_file):
     json_save_file.close()
 
 
-def main_parser(settings):
-    fonts = fontBook.load_fonts(settings['font_folder'])
-    save_json(fonts, os.path.join(settings['output'], 'fontbook.json'))
+def show_font_editor(settings, fonts):
 
-    print(f"parsed fonts, found {len(fonts)} fonts.")
-    print(f"Clean font has {len(fonts['clean'][fontBook.GLYPH_KEY])} glyphs.")
-    pass
+    column_left = [[sg.Table(headings=['Font Name'], values=fonts, key='-font-list-',
+                             col_widths=[40], num_rows=30, enable_events=True), sg.VerticalSeparator(pad=((5, 5), 0))]
+                   ]
+    column_right = [[sg.Text("Font Name:"), sg.Input(key='-font-name-')],
+                    [sg.Multiline(size=(20, 10), key='-font-info-')],
+                    [sg.Multiline(size=(25, 20), key='-OUTPUT-',
+                                  font=('Courier', '12'))],
+                    ]
+
+    col1 = sg.Column(column_left)
+    col2 = sg.Column(column_right)
+
+    layout = [[col1,  col2],
+              [sg.Button('Show'), sg.Button('Exit')]]
+
+    window = sg.Window('Font Viewer', layout, auto_size_text=True,
+                       auto_size_buttons=True, resizable=True, grab_anywhere=False,
+                       border_depth=5, default_element_size=(15, 1), finalize=True)
+
+    col1.expand(False, False)
+    # layout[0][1].expand(False, False)
+    col2.expand(True, True)
+    window['-font-list-'].expand(expand_y=True,
+                                 expand_x=False, expand_row=True)
+    window['-OUTPUT-'].expand(True, True, expand_row=True)
+    window['-font-info-'].expand(True, False)
+
+    while True:  # Event Loop
+        event, values = window.read()
+
+        if event == sg.WIN_CLOSED or event == 'Exit':
+            break
+        if event == 'Save':
+            pass
+        if event == '-font-list-':
+            # first one is the selected, no multi-select allowed.
+            selected_font = fonts[values['-font-list-'][0]]
+            window['-font-name-'].update(selected_font)
+            window['-font-info-'].update(fontBook.get_info(selected_font))
+            window['-OUTPUT-'].update(
+                fontBook.draw_text(selected_font, selected_font))
+
+    window.close()
+
+
+def main_parser(settings):
+    # TODO: Update it to also check for fonts in specified
+    # folders. settings['font_folder']
+    fonts = fontBook.list_all_fonts()
+    show_font_editor(settings, fonts)
 
 
 def main():
@@ -40,7 +85,7 @@ def main():
                         help='the folder to save the output')
     parser.add_argument('-l', '--log', default='log.txt',
                         help='the log file')
-    parser.add_argument('-q', '--quiet', action='store_true' )
+    parser.add_argument('-q', '--quiet', action='store_true')
 
     args = parser.parse_args()
 
@@ -54,7 +99,7 @@ def main():
             print(errors['no_fonts'])
             return
 
-        # ask the user for the font folder.            
+        # ask the user for the font folder.
         event, values = sg.Window('Choose Font Folder', [[sg.Text('Font Folder')], [
                                   sg.Input(key='-path-'), sg.FolderBrowse()], [sg.OK(), sg.Cancel()]]).read(close=True)
         if event == 'OK':
@@ -76,7 +121,7 @@ def main():
     settings['output'] = args.output
 
     main_parser(settings)
-    print(settings)
+
 
 if __name__ == "__main__":
     main()

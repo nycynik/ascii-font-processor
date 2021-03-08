@@ -1,18 +1,25 @@
 # ascii-font-processor
+
 This is a project for vieweing figlet formatted fonts.  It reads a folder full of 
 fonts, and then allows them to be editor and viewed. 
+
+![screenshot](screenshot.png)
 
 # What is it?
 
 I found http://www.jave.de/figlet/figfont.html.  Using [pyfiglet](https://www.geeksforgeeks.org/python-ascii-art-using-pyfiglet-module/) this reads figlet style fonts and using PySimpleGUI it displays the fonts. 
 
-## font book format (output format)
+## Fonts
 
-Each file is a collection of fonts, a font book, that is a json format with a block for each font, that includes all the meta data of the fonts in an easy to parse way for programs that want to translate text to ascii fonts.
+Fonts are found how figlet finds them, you may already have fonts installed on your machine, or it will search in the fonts folder int he folder it is launched in.
 
-# Contributing Fonts
 
-Please contribute fonts! But please add attributions! Please only add fonts you own, or you know are in the public domain and add the attribution to the meta data in the font file.
+## Future Work
 
-Fonts must be format of figlet linked above.
+* This project was pivoted from another, so the input directory is not used currently.
+* The metadata is not individually selectable from the pyFiglet library. A PR there, and then changes here would show the meta data.
+* There is no way to modify the fonts, or create a font, that is a future huge project.
+
+
+
 

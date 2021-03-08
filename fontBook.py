@@ -1,8 +1,28 @@
 """fontBook utilities for ascii font parsing."""
 import os
 import traceback
+import pyfiglet
 
 GLYPH_KEY = 'glyphs'
+
+
+def list_all_fonts():
+    """Lists all system and local fonts"""
+
+    all_fonts = pyfiglet.FigletFont.getFonts()
+    return all_fonts
+
+def get_info(font):
+    """ currently wraps the infoFont call, but I would like to add a JSON represenation of this data to 
+    better display the individual details of the font."""
+    return pyfiglet.FigletFont.infoFont(font)
+    
+def draw_text(font, text):
+    """Simple wrapper for the main draw function"""
+
+    f = pyfiglet.Figlet(font=font)
+    print(f.font, f.Font.comment)
+    return f.renderText(text)
 
 
 def parse_font_file(font_file_path):
@@ -19,6 +39,9 @@ def parse_font_file(font_file_path):
     in_letter = False
 
     try:
+        all_fonts = pyfiglet.FigletFont.getFonts()
+        print(all_fonts)
+        return
         with open(font_file_path, 'r') as f:
             in_header = True
             for line in f:
@@ -60,18 +83,18 @@ def parse_font_file(font_file_path):
 
 
 def load_fonts(font_dir):
-    """Given a folder of ascii font files, returns a fonts object with all font data
+    """Given a folder of figlet font files, returns data about all the font files
 
     :param font_dir: input folder where the fonts are located
-    :return: object containing all the fonts that were parsable from the folder
+    :return: object containing all the font data that were parsable from the folder
     """
-
 
     fonts = {}
     if os.path.isdir(font_dir):
         for filename in os.listdir(font_dir):
             # sg.one_line_progress_meter('Reading Fonts', i+1, 10000, 'key','Optional message')
-            if filename.endswith(".txt"):
+            if filename.endswith(".flf"):
+
                 font = parse_font_file(os.path.join(font_dir, filename))
                 if font is not None:
                     if 'name' not in font:
