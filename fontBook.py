@@ -17,11 +17,10 @@ def get_info(font):
     better display the individual details of the font."""
     return pyfiglet.FigletFont.infoFont(font)
     
-def draw_text(font, text):
+def draw_text(font, text, width=80):
     """Simple wrapper for the main draw function"""
 
-    f = pyfiglet.Figlet(font=font)
-    print(f.font, f.Font.comment)
+    f = pyfiglet.Figlet(font=font, width=width, justify='auto')
     return f.renderText(text)
 
 
