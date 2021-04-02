@@ -18,7 +18,7 @@
 ```
 
 This is a project for vieweing figlet formatted fonts.  It reads a folder full of 
-fonts, and then allows them to be editor and viewed. 
+fonts, and then allows them to be viewed. 
 
 ![screenshot](screenshot.png)
 
